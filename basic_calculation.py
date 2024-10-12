@@ -127,7 +127,10 @@ for j in range(1, TIMES - 1):
 
     # 掛け算
     elif calc_number == 2:
-        calculated_matrix = matrix_malti(calculated_matrix,calculating_matrix)
+        try:
+            calculated_matrix = matrix_malti(calculated_matrix,calculating_matrix)
+        except TypeError:
+            print(f"計算に失敗しました。")
         print(f"{calculating_matrix}")
         break
 
