@@ -1,4 +1,5 @@
 import numpy as np
+import sys
 
 TIMES = 2
 matrix_types = []
@@ -102,40 +103,34 @@ calculated_matrix = input_matrix(matrix_types[0], matrix_elements[0])
 print(calculated_matrix)
 
 # 計算の実行
-for j in range(1, TIMES - 1):
+for j in range(1, TIMES):
     # 計算を行う行列を生成
     calculating_matrix = input_matrix(matrix_types[j], matrix_elements[j])
-    # 足し算
-    if calc_number == 0:
-        try:
+    print("calculating:", {calculating_matrix})
+    try:
+        # 足し算
+        if calc_number == 0:
             calculated_matrix = matrix_add(calculated_matrix, calculating_matrix)
-        except TypeError:
-            print(f"計算に失敗しました。{TIMES}つの行列の型をそろえてください。")
-            break
-        else:
-            print(f" + {calculating_matrix}")
-
-    # 引き算
-    elif calc_number == 1:
-        try:
+        # 引き算
+        elif calc_number == 1:
             calculated_matrix = matrix_sub(calculated_matrix,calculating_matrix)
-        except TypeError:
-            print(f"計算に失敗しました。{TIMES}つの行列の型をそろえてください。")
-            break
-        else:
-            print(f" - {calculating_matrix}")
-
-    # 掛け算
-    elif calc_number == 2:
-        try:
+        # 掛け算
+        elif calc_number == 2:
             calculated_matrix = matrix_malti(calculated_matrix,calculating_matrix)
-        except TypeError:
-            print(f"計算に失敗しました。")
-        print(f"{calculating_matrix}")
-        break
+    # 計算ができなかったら終了
+    except TypeError:
+        print(f"計算に失敗しました。")
+        sys.exit()
+    else:
+        # 足した数の表示
+        if calc_number == 0:
+            print(f" + {calculating_matrix}")
+        # 引いた数の表示
+        elif calc_number == 1:
+            print(f" - {calculating_matrix}")
+        # 掛けた数の表示
+        elif calc_number == 2:
+            print(f"{calculating_matrix}")
 
-try:
-    print(f" = {calculated_matrix}")
-except TypeError:
-    pass
-
+# 計算結果の表示
+print(f" = {calculated_matrix}")
