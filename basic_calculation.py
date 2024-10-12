@@ -25,7 +25,6 @@ print(f"""
 # 要素と型を入力して行列に変換
 def input_matrix(matrix_type, matrix_element):
     matrix = np.array(matrix_element).reshape(matrix_type[0], matrix_type[1])
-
     return matrix
 
 # 行列の足し算を行う
@@ -34,9 +33,9 @@ def matrix_add(matrix1, matrix2):
     if matrix1.shape() == matrix2.shape():
         sum = matrix1 + matrix2
         return sum
-    # 計算ができなければ―1を返す
+    # 計算ができなければTypeErrorを返す
     else:
-        return -1
+        return TypeError
 
 # 行列の引き算を行う
 def matrix_sub(matrix1, matrix2):
@@ -44,9 +43,9 @@ def matrix_sub(matrix1, matrix2):
     if matrix1.shape() == matrix2.shape():
         difference = matrix1 - matrix2
         return difference
-    # 計算ができなければ―1を返す
+    # 計算ができなければTypeErrorを返す
     else:
-        return -1
+        return TypeError
 
 # 行列の掛け算を行う
 def matrix_malti(matrix1, matrix2):
@@ -54,13 +53,25 @@ def matrix_malti(matrix1, matrix2):
     if matrix1.shape()[1] == matrix2.shape()[0]:
         matrix = matrix1 @ matrix2
         return matrix
-    # 計算ができなければ―1を返す
+    # 計算ができなければTypeErrorを返す
     else:
-        return -1
+        return TypeError
 
 for i in range(1, TIMES + 1):
     #行列の型を入力
-    matrix_type = list(map(int, input(f"{i}つ目の行列の型：").split(' ')))
+    while True:
+        try:
+            matrix_type = list(map(int, input(f"{i}つ目の行列の型：").split(' ')))
+        except ValueError:
+            print("入力例に従って入力して下さい。")
+        # 正しい形式で型が入力されていたらループを抜ける
+        else:
+            if len(matrix_type) == 2 and matrix_type[0] >= 1 and matrix_type[1] >= 1:
+                break
+            # 形式に沿っていなければ再入力
+            else:
+                print("2つの自然数を入力してください。")
+
     number_of_element = matrix_type[0] * matrix_type[1]
     matrix_types.append(matrix_type)
 
@@ -96,16 +107,32 @@ for j in range(1, TIMES - 1):
     calculating_matrix = input_matrix(matrix_types[j], matrix_elements[j])
     # 足し算
     if calc_number == 0:
-        calculated_matrix = matrix_add(calculated_matrix, calculating_matrix)
-        print(f" + {calculating_matrix}")
+        try:
+            calculated_matrix = matrix_add(calculated_matrix, calculating_matrix)
+        except TypeError:
+            print(f"計算に失敗しました。{TIMES}つの行列の型をそろえてください。")
+            break
+        else:
+            print(f" + {calculating_matrix}")
+
     # 引き算
     elif calc_number == 1:
-        calculated_matrix = matrix_sub(calculated_matrix,calculating_matrix)
-        print(f" - {calculating_matrix}")
+        try:
+            calculated_matrix = matrix_sub(calculated_matrix,calculating_matrix)
+        except TypeError:
+            print(f"計算に失敗しました。{TIMES}つの行列の型をそろえてください。")
+            break
+        else:
+            print(f" - {calculating_matrix}")
+
     # 掛け算
     elif calc_number == 2:
         calculated_matrix = matrix_malti(calculated_matrix,calculating_matrix)
         print(f"{calculating_matrix}")
+        break
 
-print(f" = {calculated_matrix}")
+try:
+    print(f" = {calculated_matrix}")
+except TypeError:
+    pass
 
