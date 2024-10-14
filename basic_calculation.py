@@ -136,10 +136,10 @@ for j in range(1, TIMES):
             print(f" - {calculating_matrix}")
         # 掛けた数の表示
         elif calc_number == 2:
-            print(f"{calculating_matrix}")
+            print(f" @ {calculating_matrix}")
 
 # 計算に失敗したらエラー文を表示
-if calculated_matrix == None:
+if calculated_matrix.any() == None:
     print("計算に失敗しました。")
 # 成功したら計算結果を表示
 else:
