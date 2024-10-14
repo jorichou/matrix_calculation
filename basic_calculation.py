@@ -31,32 +31,33 @@ def input_matrix(matrix_type, matrix_element):
 # 行列の足し算を行う
 def matrix_add(matrix1, matrix2):
     # 2つの行列の型が同じであれば計算を行う
-    if matrix1.shape() == matrix2.shape():
+    
+    if matrix1.shape == matrix2.shape:
         sum = matrix1 + matrix2
         return sum
-    # 計算ができなければTypeErrorを返す
+    # 計算ができなければNoneを返す
     else:
-        return TypeError
+        return None
 
 # 行列の引き算を行う
 def matrix_sub(matrix1, matrix2):
     # 2つの行列の型が同じであれば計算を行う
-    if matrix1.shape() == matrix2.shape():
+    if matrix1.shape == matrix2.shape:
         difference = matrix1 - matrix2
         return difference
-    # 計算ができなければTypeErrorを返す
+    # 計算ができなければNoneを返す
     else:
-        return TypeError
+        return None
 
 # 行列の掛け算を行う
 def matrix_malti(matrix1, matrix2):
     # 1つ目の行列の列数と2つ目の行列の行数が同じならば計算を行う
-    if matrix1.shape()[1] == matrix2.shape()[0]:
+    if matrix1.shape[1] == matrix2.shape[0]:
         matrix = matrix1 @ matrix2
         return matrix
-    # 計算ができなければTypeErrorを返す
+    # 計算ができなければNoneを返す
     else:
-        return TypeError
+        return None
 
 for i in range(1, TIMES + 1):
     #行列の型を入力
@@ -78,11 +79,16 @@ for i in range(1, TIMES + 1):
 
     while True:
         # 行列の要素を入力
-        matrix_element = list(map(int, input(f"{i}つ目の行列の要素：").split(' ')))
+        try:
+            matrix_element = list(map(float, input(f"{i}つ目の行列の要素：").split(' ')))
+        except ValueError:
+            print("数字を入力してください")
+        else:
         # 要素数が足りていれば、ループを抜ける
-        if number_of_element == len(matrix_element):
-            break
-        print("要素数が少ないです。もういちど入力してください。")
+            if number_of_element == len(matrix_element):
+                break
+            else:
+                print("要素数が少ないです。もういちど入力してください。")
     matrix_elements.append(matrix_element)
 
 # 計算の種類を選択
@@ -106,7 +112,7 @@ print(calculated_matrix)
 for j in range(1, TIMES):
     # 計算を行う行列を生成
     calculating_matrix = input_matrix(matrix_types[j], matrix_elements[j])
-    print("calculating:", {calculating_matrix})
+    # print(f"calculating:{calculating_matrix}")
     try:
         # 足し算
         if calc_number == 0:
@@ -132,5 +138,9 @@ for j in range(1, TIMES):
         elif calc_number == 2:
             print(f"{calculating_matrix}")
 
-# 計算結果の表示
-print(f" = {calculated_matrix}")
+# 計算に失敗したらエラー文を表示
+if calculated_matrix == None:
+    print("計算に失敗しました。")
+# 成功したら計算結果を表示
+else:
+    print(f" = {calculated_matrix}")
