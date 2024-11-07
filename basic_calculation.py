@@ -8,7 +8,7 @@ matrix_elements = []
 calc_kinds = ['足し算', '引き算', '掛け算']
 
 print(f"{TIMES}つの行列の計算を行います。")
-print(f"""
+print("""
 型の入力例:
 3行2列の場合
 
@@ -21,49 +21,47 @@ print(f"""
 [8 9 ]]
 という行列を入力する場合
 
-5 2 3 6 8 9
+1行目: 5 2 3
+2行目: 6 8 9
 """)
 
-class Matrix_info:
-    def __init__(self, matrix):
-        self.matrix_row = len(matrix)
-        self.matrix_column = len(matrix[0])
-        
-    # 多重リストをnumpy配列に変換
-    def input_matrix(matrix_element):
-        matrix = np.array(matrix_element)
+# 多重リストをnumpy配列に変換
+def input_matrix(matrix_element):
+    matrix = np.array(matrix_element)
+    return matrix
+
+
+# 行列の足し算を行う
+def matrix_add(matrix1, matrix2):
+    try:
+        sum = matrix1 + matrix2
+    # 計算ができなければNoneを返す
+    except ValueError:
+        return None
+    else:
+        return sum
+
+
+# 行列の引き算を行う
+def matrix_sub(matrix1, matrix2):
+    try:
+        difference = matrix1 - matrix2
+    # 計算ができなければNoneを返す
+    except ValueError:
+        return None
+    else:
+        return difference
+
+
+# 行列の掛け算を行う
+def matrix_malti(matrix1, matrix2):
+    try:
+        matrix = np.dot(matrix1, matrix2)
+    # 計算ができなければNoneを返す
+    except ValueError:
+        return None
+    else:
         return matrix
-
-    # 行列の足し算を行う
-    def matrix_add(matrix1, matrix2):
-        # 2つの行列の型が同じであれば計算を行う
-        
-        if matrix1.matrix_column == matrix2.matrix_row:
-            sum = matrix1 + matrix2
-            return sum
-        # 計算ができなければNoneを返す
-        else:
-            return None
-
-    # 行列の引き算を行う
-    def matrix_sub(matrix1, matrix2):
-        # 2つの行列の型が同じであれば計算を行う
-        if matrix1.shape == matrix2.shape:
-            difference = matrix1 - matrix2
-            return difference
-        # 計算ができなければNoneを返す
-        else:
-            return None
-
-    # 行列の掛け算を行う
-    def matrix_malti(matrix1, matrix2):
-        # 1つ目の行列の列数と2つ目の行列の行数が同じならば計算を行う
-        if matrix1.shape[1] == matrix2.shape[0]:
-            matrix = matrix1 @ matrix2
-            return matrix
-        # 計算ができなければNoneを返す
-        else:
-            return None
 
 # メインの処理
 if __name__ == "__main__":
@@ -99,11 +97,13 @@ if __name__ == "__main__":
                     counter += 1
                     # 行数が足りている場合ループを抜ける
                     if matrix_type[0] == len(matrix_rows):
+                        inputed_matrix = matrix_rows.copy()
+                        matrix_elements.append(inputed_matrix)
                         matrix_rows.clear()
                         break
                 else:
                     print("要素数が少ないです。もういちど入力してください。")
-        matrix_elements.append(matrix_rows)
+        print(matrix_elements[i-1])
 
     # 計算の種類を選択
     print("""
@@ -144,17 +144,18 @@ if __name__ == "__main__":
         else:
             # 足した数の表示
             if calc_number == 0:
-                print(f" + {calculating_matrix}")
+                print(" + ")
             # 引いた数の表示
             elif calc_number == 1:
-                print(f" - {calculating_matrix}")
+                print(" - ")
             # 掛けた数の表示
             elif calc_number == 2:
-                print(f" @ {calculating_matrix}")
+                print(" @ ")
+            print(calculating_matrix)
 
     # 計算に失敗したらエラー文を表示
-    if calculated_matrix.any() == None:
+    if calculated_matrix.any() == False:
         print("計算に失敗しました。")
     # 成功したら計算結果を表示
     else:
-        print(f" = {calculated_matrix}")
+        print(f" = \n{calculated_matrix}")
